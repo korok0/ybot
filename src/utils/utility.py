@@ -23,10 +23,14 @@ class Utility:
         :param name: str (str index for json data)
         :return: str
         """
+
+        """ 
+        new feature to add: return a dictionary of items so that function
+        is only called once
+        """
         
         res = requests.get(url)
         data = res.json()
-        print(data)
         person = list(data.values())[index]['players']
         return person[0][name]
     
@@ -69,7 +73,6 @@ class Utility:
             print(f"unregistered id: {id}")
             conn.commit()
             data = c.fetchall()
-            print
         else:
             return False
         conn.close()

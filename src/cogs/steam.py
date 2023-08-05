@@ -42,7 +42,6 @@ class SteamCommands(commands.Cog):
             ephVar = False
         else: 
             if u.is_registered(member.id) and u.test_token(member.id):
-    
                 b_token = u.fetch_token(member.id)
                 if u.get_user_steam(b_token) is None:
                     embed = discord.Embed(color=aColor,
