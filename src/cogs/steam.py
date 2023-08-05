@@ -50,15 +50,16 @@ class SteamCommands(commands.Cog):
                 else:
                     steam_id = u.get_user_steam(b_token)
                     url+=steam_id
-                    avatar = u.unpack(0, url, 'avatarfull')
+                    data = u.get_steam_data(url)
+                    avatar = u.unpack(0, data, 'avatarfull')
 
-                    name = u.unpack(0, url, 'personaname')
+                    name = u.unpack(0, data, 'personaname')
                     try:
-                        last_on = u.unpack(0, url, 'lastlogoff')
+                        last_on = u.unpack(0, data, 'lastlogoff')
                     except Exception as e:
                         print(f"new account error: {e}\nUsing current time")
                         last_on = time.time()
-                    profile_url = u.unpack(0, url, 'profileurl')
+                    profile_url = u.unpack(0, data, 'profileurl')
                     embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"Last on: {datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}")
                     embed.set_thumbnail(url=avatar)
                     ephVar = False

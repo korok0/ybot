@@ -16,23 +16,22 @@ REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 # custom utility commands for handling databases and discord data
 class Utility:
-    def unpack(self, index: int=0, url: str=None, name: str=None) -> str:
+    def unpack(self, index, data, index_name) -> str:
         """
         :param index: int
-        :param url: str
-        :param name: str (str index for json data)
+        :param data: Any
+        :param index_name: str (str index for json data)
         :return: str
         """
 
-        """ 
-        new feature to add: return a dictionary of items so that function
-        is only called once
-        """
-        
+        person = list(data.values())[index]['players']
+        return person[0][index_name]
+    
+    def get_steam_data(self, url: str):
         res = requests.get(url)
         data = res.json()
-        person = list(data.values())[index]['players']
-        return person[0][name]
+        print(data)
+        return data
     
     def register(self, code):
         conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
