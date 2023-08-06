@@ -11,11 +11,10 @@ sys.path.append(project_root)
 # key = discord id
 # value = steam id
 load_dotenv()
-ecs = os.getenv("BOT_OAUTH_SECRET")
 url = 'https://discord.com/api/v10/users/@me'
 API_ENDPOINT = "https://discord.com/api/v10"
-CLIENT_ID = '1027772366476017677'
-CLIENT_SECRET = ecs
+CLIENT_ID = os.getenv("BOT_APPLICATION_ID")
+CLIENT_SECRET = os.getenv("BOT_OAUTH_SECRET")
 REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 

@@ -13,9 +13,11 @@ sys.path.append(project_root)
 
 load_dotenv()
 TOKEN = os.getenv("BOT_SECRET_TOKEN")
+APPLICATION_ID = os.getenv("BOT_APPLICATION_ID")
+
 PREFIX = "!"
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=PREFIX, intents=intents, status=discord.Status.idle, activity=discord.Game(name="Bot Activities"), application_id="1027772366476017677")
+bot = commands.Bot(command_prefix=PREFIX, intents=intents, status=discord.Status.idle, activity=discord.Game(name="Bot Activities"), application_id=APPLICATION_ID)
 @bot.event   
 async def on_ready():
     print("bot is ready!")
@@ -50,8 +52,14 @@ async def ping(ctx):
 @bot.command()
 @is_owner()
 async def sync(ctx):
-    await ctx.bot.tree.sync()
-    await ctx.send("Commands are synced!")
+    print("is owner confirmed")
+    try:
+        await ctx.bot.tree.sync()
+        print("tree synced")
+        await ctx.send("Commands are synced!")
+    except Exception as e:
+        print("Error during sync:", e)
+        await ctx.send("An error occurred during sync.")
 
 async def load():
     for file in os.listdir(os.path.join(project_root, 'src', 'cogs')):
