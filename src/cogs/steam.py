@@ -2,21 +2,23 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import sys
-project_root = 'C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot'
+import os
+from dotenv import load_dotenv
+from datetime import datetime
+import time
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+print(f"PR Steam: {project_root}")
 sys.path.append(project_root)
+
 from src.buttons.buttons import SteamButton
 from src.utils.utility import Utility
-from dotenv import load_dotenv
-import os
-from datetime import datetime
-import sqlite3
-import time
+
+
 load_dotenv()
 u = Utility()
 STEAM_KEY = os.getenv("STEAM_SECRET_TOKEN")
 pSumUrl = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={STEAM_KEY}&steamids="
-conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
-c = conn.cursor()
 
 class SteamCommands(commands.Cog):
     def __init__(self, bot):

@@ -2,10 +2,15 @@ import requests
 import os
 from dotenv import load_dotenv
 import sqlite3
-load_dotenv()
+import sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+print(f"PR Utility: {project_root}")
+sys.path.append(project_root)
+
 # key = discord id
 # value = steam id
-
+load_dotenv()
 ecs = os.getenv("BOT_OAUTH_SECRET")
 url = 'https://discord.com/api/v10/users/@me'
 API_ENDPOINT = "https://discord.com/api/v10"
@@ -34,7 +39,7 @@ class Utility:
         return data
     
     def register(self, code):
-        conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         ec = self._exchange_code(code)
         print(ec)
@@ -64,7 +69,7 @@ class Utility:
     
     def unregister(self, id) -> bool:
 
-        conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         # check if user is registered using registered_id
         if self.is_registered(id):
@@ -81,7 +86,7 @@ class Utility:
         """
         iterate through data base and check if id exists in database, if it does, return true
         """
-        conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         c.execute(f"SELECT id FROM users WHERE id={id}")
         conn.commit()
@@ -110,7 +115,7 @@ class Utility:
         return True
 
     def fetch_token(self, id):
-        conn = sqlite3.connect("C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot\\src\\bot\\members.db", check_same_thread=False)
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         # to avoid Type Error
         
