@@ -31,6 +31,7 @@ class SteamCommands(commands.Cog):
     async def unlink(self, interaction: discord.Interaction):
         embed = discord.Embed(color=discord.Color.blue(), title="Do you wish to unlink your account?")
         await interaction.response.send_message(view=SteamButton(interaction), embed=embed)
+        
 
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def getProfile(self, interaction: discord.Interaction, member: discord.Member):

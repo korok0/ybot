@@ -1,19 +1,15 @@
-
 import discord
 import asyncio
 from discord.ext import commands
 import os
 from dotenv import load_dotenv, dotenv_values
 from discord.ext.commands import is_owner
-
 import sys
 
 
-import sys
-project_root = 'C:\\Users\\Vinea\\Desktop\\Personal Projects\\ybot'
+project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+print(f"PR: {project_root}")
 sys.path.append(project_root)
-
-
 
 load_dotenv()
 TOKEN = os.getenv("BOT_SECRET_TOKEN")
