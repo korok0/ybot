@@ -2,3 +2,7 @@
 .db
 .pyc
 ybotvenv/
+__pycache__
+src/utils/__pycache__/
+src/cogs/__pycache__/
+src/buttons/__pycache__/
