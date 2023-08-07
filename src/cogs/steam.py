@@ -36,7 +36,7 @@ class SteamCommands(commands.Cog):
         
 
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
-    async def getProfile(self, interaction: discord.Interaction, member: discord.Member):
+    async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
         url = pSumUrl
         aColor = discord.Colour.dark_theme()
         # bot cannot have profile
@@ -60,13 +60,17 @@ class SteamCommands(commands.Cog):
                     avatar = u.unpack(0, data, 'avatarfull')
 
                     name = u.unpack(0, data, 'personaname')
+                    country = u.unpack(0, data, "loccountrycode")
+                    time_created = u.unpack(0, data, "timecreated")
                     try:
                         last_on = u.unpack(0, data, 'lastlogoff')
                     except Exception as e:
                         print(f"new account error: {e}\nUsing current time")
                         last_on = time.time()
                     profile_url = u.unpack(0, data, 'profileurl')
-                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"Last on: {datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}")
+                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Last on:** {datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}")
+                    embed.add_field(name=f"Country", value=f":flag_{country.lower()}:", inline=True)
+                    embed.add_field(name=f"Created", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}", inline=True)
                     embed.set_thumbnail(url=avatar)
                     ephVar = False
             else:
