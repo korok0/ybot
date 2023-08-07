@@ -62,11 +62,14 @@ class SteamCommands(commands.Cog):
                     name = u.unpack(0, data, 'personaname')
                     country = u.unpack(0, data, "loccountrycode")
                     time_created = u.unpack(0, data, "timecreated")
+
+                    # handle new account error
                     try:
                         last_on = u.unpack(0, data, 'lastlogoff')
                     except Exception as e:
                         print(f"new account error: {e}\nUsing current time")
                         last_on = time.time()
+
                     profile_url = u.unpack(0, data, 'profileurl')
                     embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Last on:** {datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}")
                     embed.add_field(name=f"Country", value=f":flag_{country.lower()}:", inline=True)
@@ -75,7 +78,7 @@ class SteamCommands(commands.Cog):
                     ephVar = False
             else:
                 if member.id == interaction.user.id:
-                # will send user to register/authenticate their account into the database
+                    # will send user to register/authenticate their account into the database
                     ephVar = True
                     embed = discord.Embed(color=aColor,
                                         title=f'User does not have an account linked. Click to register',
@@ -86,7 +89,7 @@ class SteamCommands(commands.Cog):
                     ephVar = False
         embed.set_author(name=member.name, icon_url=member.avatar)
         await interaction.response.send_message(embed=embed, ephemeral=ephVar)
-    # app_command register
+
         
 async def setup(bot):
     await bot.add_cog(SteamCommands(bot))
