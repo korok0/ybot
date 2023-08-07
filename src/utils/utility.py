@@ -31,12 +31,6 @@ class Utility:
         person = list(data.values())[index]['players']
         return person[0][index_name]
     
-    def get_steam_data(self, url: str):
-        res = requests.get(url)
-        data = res.json()
-        print(data)
-        return data
-    
     def register(self, code):
         conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
@@ -67,7 +61,6 @@ class Utility:
         return
     
     def unregister(self, id) -> bool:
-
         conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         # check if user is registered using registered_id
@@ -124,11 +117,26 @@ class Utility:
         conn.close()
         return token
 
-    def get_user_steam(self, token):
+    def get_user_details(self, id):
+        token = self.fetch_token(id)
         url = 'https://discord.com/api/v10/users/@me/connections'
         headers = {
             'Authorization': f'Bearer {token}'
         }
+        response = requests.get(url, headers=headers)
+        user = response.json()
+        print(user)
+        return user
+    
+    def get_user_spotify_id(self, token):
+        pass
+    
+    def get_user_steam_id(self, token):
+        url = 'https://discord.com/api/v10/users/@me/connections'
+        headers = {
+            'Authorization': f'Bearer {token}'
+        }
+        
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
@@ -140,7 +148,13 @@ class Utility:
             # Request failed, print the status code and reason
             print(f"Request failed with status code: {response.status_code}, Reason: {response.reason}")
         return None
-
+    
+    def get_steam_data(self, url: str):
+        res = requests.get(url)
+        data = res.json()
+        print(data)
+        return data
+    
     # Need to create full-fledged/hosted website for this
     def _exchange_code(self, code):
         data = {
@@ -155,20 +169,6 @@ class Utility:
         }
         r = requests.post(f'{API_ENDPOINT}/oauth2/token', data=data, headers=headers)
         return r.json()
-
-    """def _refresh_token(self, refresh_token):
-        data = {
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET,
-            'grant_type': 'refresh_token',
-            'refresh_token': refresh_token
-        }
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        r = requests.post(f'{API_ENDPOINT}/oauth2/token', data=data, headers=headers)
-        r.raise_for_status()
-        return r.json()"""
 
 
 

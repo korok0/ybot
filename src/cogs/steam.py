@@ -39,19 +39,22 @@ class SteamCommands(commands.Cog):
     async def getProfile(self, interaction: discord.Interaction, member: discord.Member):
         url = pSumUrl
         aColor = discord.Colour.dark_theme()
+        # bot cannot have profile
         if member.id == interaction.client.user.id:
             embed = discord.Embed(color=aColor,
                                     title=f'Bot does not have a steam profile!')
             ephVar = False
         else: 
+            # check if user is registered and if token is valid
             if u.is_registered(member.id) and u.test_token(member.id):
                 b_token = u.fetch_token(member.id)
-                if u.get_user_steam(b_token) is None:
+                # check if user 
+                steam_id = u.get_user_steam_id(b_token)
+                if steam_id is None:
                     embed = discord.Embed(color=aColor,
                                     title=f'User must add steam to their connections in settings>connections')
                     ephVar = False
                 else:
-                    steam_id = u.get_user_steam(b_token)
                     url+=steam_id
                     data = u.get_steam_data(url)
                     avatar = u.unpack(0, data, 'avatarfull')
