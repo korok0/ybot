@@ -2,7 +2,7 @@ import discord
 import asyncio
 from discord.ext import commands
 import os
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 from discord.ext.commands import is_owner
 import sys
 
@@ -18,10 +18,10 @@ APPLICATION_ID = os.getenv("BOT_APPLICATION_ID")
 PREFIX = "!"
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=PREFIX, intents=intents, status=discord.Status.idle, activity=discord.Game(name="Bot Activities"), application_id=APPLICATION_ID)
+
 @bot.event   
 async def on_ready():
-    print("bot is ready!")
-    print(bot.user)
+    print(f"{bot.user} is ready!")
 
 @bot.event
 async def on_message_delete(message):
@@ -46,10 +46,6 @@ async def shutdown(ctx):
     await bot.close()
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send("pong!")
-
-@bot.command()
 @is_owner()
 async def sync(ctx):
     print("is owner confirmed")
@@ -65,7 +61,9 @@ async def load():
     for file in os.listdir(os.path.join(project_root, 'src', 'cogs')):
         if file.endswith('.py'):
             await bot.load_extension(f'src.cogs.{file[:-3]}')
+
 async def main():
     await load()
     await bot.start(TOKEN)
+    
 asyncio.run(main())
