@@ -89,8 +89,9 @@ class SteamCommands(commands.Cog):
                                     title=f'User must register their account by using /register command (WIP)')
                     ephVar = False
         embed.set_author(name=member.name, icon_url=member.avatar)
-
-        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=SteamSelectMenu(interaction))
+        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=SteamSelectMenu(interaction=interaction, embed=embed))
+            
+        
 
         
 async def setup(bot):
