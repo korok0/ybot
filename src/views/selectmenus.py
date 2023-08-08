@@ -8,5 +8,6 @@ sys.path.append(project_root)
 
 from src.utils.utility import Utility
 
-class SteamModal():
+class SteamSelectMenu():
+    # this is a steam menu
     pass
