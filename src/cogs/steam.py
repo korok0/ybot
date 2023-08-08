@@ -12,6 +12,7 @@ print(f"PR Steam: {project_root}")
 sys.path.append(project_root)
 
 from src.views.buttons import SteamButton
+from src.views.selectmenus import SteamSelectMenu
 from src.utils.utility import Utility
 
 
@@ -88,7 +89,8 @@ class SteamCommands(commands.Cog):
                                     title=f'User must register their account by using /register command (WIP)')
                     ephVar = False
         embed.set_author(name=member.name, icon_url=member.avatar)
-        await interaction.response.send_message(embed=embed, ephemeral=ephVar)
+
+        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=SteamSelectMenu(interaction))
 
         
 async def setup(bot):
