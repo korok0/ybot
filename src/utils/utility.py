@@ -20,80 +20,22 @@ REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 # custom utility commands for handling databases and discord data
 class Utility:
-    def unpack(self, index, data, index_name) -> str:
+    def unpack(self, index: int, data, index_name: str) -> str:
         """
         :param index: int
-        :param data: Any
-        :param index_name: str (str index for json data)
-        :return: str
+        :param data: `Request.get.json()` data
+        :param index_name: key for data
+        :return: str value
         """
 
         person = list(data.values())[index]['players']
         return person[0][index_name]
     
-    def register(self, code):
-        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
-        c = conn.cursor()
-        ec = self._exchange_code(code)
-        print(ec)
-        bearer_token = ec["access_token"]
-        # refresh_token = ec["refresh_token"]
-        headers = {
-            'Authorization': f'Bearer {bearer_token}'
-        }
-        print(f'ec: {ec}')
-        print(f"Bearer Token: {bearer_token}")
-        response = requests.get(url=url,headers=headers)
-        user=response.json()
-        member_id = int(user["id"])
-
-        try:
-            c.execute(f"INSERT INTO users VALUES ({member_id}, '{bearer_token}')")
-            print(f"attempting to register user: {member_id}")
-        except Exception as e:
-            print(e)
-            print(f"unique id: {member_id} already exists in database")
-
-        c.execute("SELECT * FROM users")
-        print(c.fetchall())
-        conn.commit()
-        conn.close()
-        return
-    
-    def unregister(self, id) -> bool:
-        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
-        c = conn.cursor()
-        # check if user is registered using registered_id
-        if self.is_registered(id):
-            c.execute(f"DELETE FROM users WHERE id={id}")
-            print(f"unregistered id: {id}")
-            conn.commit()
-            data = c.fetchall()
-        else:
-            return False
-        conn.close()
-        return True
-    
-    def is_registered(self, id):
+    def test_token(self, id: int) -> bool:
         """
-        iterate through data base and check if id exists in database, if it does, return true
+        :param id: `discord.Member` id
+        :return: `bool`
         """
-        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
-        c = conn.cursor()
-        c.execute(f"SELECT id FROM users WHERE id={id}")
-        conn.commit()
-        data = c.fetchone()
-        print(f"data: {data}")
-        if data is not None:
-            if id == data[0]:
-                print(f"id {id}")
-                print(f"data 0: {data[0]}")
-                conn.close()
-                return True
-            conn.close()
-        return False
-    
-    def test_token(self, id) -> bool:
         test = self.fetch_token(id)
         headers = {
             'Authorization': f'Bearer {test}'
@@ -106,7 +48,11 @@ class Utility:
             
         return True
 
-    def fetch_token(self, id):
+    def fetch_token(self, id: int) -> str:
+        """
+        :param id: `discord.Member` id
+        :return: `str` member connection token
+        """
         conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
         c = conn.cursor()
         # to avoid Type Error
@@ -128,10 +74,18 @@ class Utility:
         print(user)
         return user
     
-    def get_user_spotify_id(self, token):
+    def get_user_spotify_id(self, token: str):
+        """
+        :param token: token for spotify api authentication
+        :return: `str` or `None`
+        """
         pass
     
-    def get_user_steam_id(self, token):
+    def get_user_steam_id(self, token: str):
+        """
+        :param token: token for discord api authentication
+        :return: `str` or `None`
+        """
         url = 'https://discord.com/api/v10/users/@me/connections'
         headers = {
             'Authorization': f'Bearer {token}'
@@ -150,13 +104,21 @@ class Utility:
         return None
     
     def get_steam_data(self, url: str):
+        """
+        :param url: steam api url
+        :return: json encoded content
+        """
         res = requests.get(url)
         data = res.json()
         print(data)
         return data
     
     # Need to create full-fledged/hosted website for this
-    def _exchange_code(self, code):
+    def _exchange_code(self, code: str):
+        """
+        :param code: query string from oauth2 site redirect
+        :return: json encoded content
+        """
         data = {
             'client_id': CLIENT_ID,
             'client_secret': CLIENT_SECRET,
@@ -170,6 +132,75 @@ class Utility:
         r = requests.post(f'{API_ENDPOINT}/oauth2/token', data=data, headers=headers)
         return r.json()
 
+    def register(self, code: str):
+        """
+        :param code: query string from oauth2 site redirect
+        :return: None
+        """
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
+        c = conn.cursor()
+        ec = self._exchange_code(code)
+        print(ec)
+        bearer_token = ec["access_token"]
+        # refresh_token = ec["refresh_token"]
+        headers = {
+            'Authorization': f'Bearer {bearer_token}'
+        }
+        print(f'ec: {ec}')
+        print(f"Bearer Token: {bearer_token}")
+        response = requests.get(url=url,headers=headers)
+        user=response.json()
+        member_id = int(user["id"])
+        
+        # must come back and clean up this code
+        try:
+            c.execute(f"INSERT INTO users VALUES ({member_id}, '{bearer_token}')")
+            print(f"attempting to register user: {member_id}")
+        except Exception as e:
+            print(e)
+            print(f"unique id: {member_id} already exists in database")
 
-
-
+        c.execute("SELECT * FROM users")
+        print(c.fetchall())
+        conn.commit()
+        conn.close()
+        return
+    
+    def unregister(self, id: int) -> bool:
+        """
+        :param int: `discord.Member` id
+        :return: `bool`
+        """
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
+        c = conn.cursor()
+        # check if user is registered using registered_id
+        if self.is_registered(id):
+            c.execute(f"DELETE FROM users WHERE id={id}")
+            print(f"unregistered id: {id}")
+            conn.commit()
+            data = c.fetchall()
+        else:
+            conn.close()
+            return False
+        conn.close()
+        return True
+    
+    def is_registered(self, id: int) -> bool:
+        """
+        :param int: `discord.Member` id
+        :return: `bool`
+        """
+        conn = sqlite3.connect(os.path.join(project_root, "src\\bot\\members.db"), check_same_thread=False)
+        c = conn.cursor()
+        c.execute(f"SELECT id FROM users WHERE id={id}")
+        conn.commit()
+        data = c.fetchone()
+        print(f"data: {data}")
+        if data is not None:
+            if id == data[0]:
+                print(f"id {id}")
+                print(f"data 0: {data[0]}")
+                conn.close()
+                return True
+            conn.close()
+        return False
