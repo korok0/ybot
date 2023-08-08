@@ -11,7 +11,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__fi
 print(f"PR Steam: {project_root}")
 sys.path.append(project_root)
 
-from src.buttons.buttons import SteamButton
+from src.views.buttons import SteamButton
 from src.utils.utility import Utility
 
 
@@ -71,9 +71,9 @@ class SteamCommands(commands.Cog):
                         last_on = time.time()
 
                     profile_url = u.unpack(0, data, 'profileurl')
-                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Last on:** {datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}")
-                    embed.add_field(name=f"Country", value=f":flag_{country.lower()}:", inline=True)
-                    embed.add_field(name=f"Created", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}", inline=True)
+                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** :flag_{country.lower()}:")
+                    embed.add_field(name=f"**__Last logoff__** ", value=f"{datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}", inline=True)
+                    embed.add_field(name=f"**__Created__** ", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}", inline=True)
                     embed.set_thumbnail(url=avatar)
                     ephVar = False
             else:

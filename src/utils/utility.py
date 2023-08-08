@@ -63,7 +63,11 @@ class Utility:
         conn.close()
         return token
 
-    def get_user_details(self, id):
+    def get_user_details(self, id: int):
+        """
+        :param id: `discord.Member` id
+        :return: `str` member connection token
+        """
         token = self.fetch_token(id)
         url = 'https://discord.com/api/v10/users/@me/connections'
         headers = {
