@@ -1,6 +1,6 @@
 .env
-.db
 .pyc
+.db
 ybotvenv/
 src/bot/*.db
 /__pycache__
