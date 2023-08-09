@@ -21,25 +21,21 @@ REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 # custom utility commands for handling databases and discord data
 class Utility:
-    def unpack(self, index: int, data, index_name: str):
+    def unpack(self, index: int, data, index_name: str, index_type: str):
         """
         :param index: int
         :param data: `Request.get.json()` data
         :param index_name: key for data
         :return: Any value
         """
-        print(index_name)
         try:
-            person = list(data.values())[index]['players']
+            person = list(data.values())[index][index_type]
             return person[index][index_name]
         except Exception as k:
             print(k)
-            print(index_name)
             if index_name == 'loccountrycode':
-                print("ahh")
                 return ":x:"
             elif index_name == 'lastlogoff':
-                print("de")
                 return time.time()
             return None
     

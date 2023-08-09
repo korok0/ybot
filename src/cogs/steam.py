@@ -15,7 +15,6 @@ from src.views.buttons import SteamButton
 from src.views.selectmenus import SteamSelectMenu
 from src.utils.utility import Utility
 
-
 load_dotenv()
 u = Utility()
 STEAM_KEY = os.getenv("STEAM_SECRET_TOKEN")
@@ -35,16 +34,14 @@ class SteamCommands(commands.Cog):
         embed = discord.Embed(color=discord.Color.blue(), title="Do you wish to unlink your account?")
         await interaction.response.send_message(view=SteamButton(interaction), embed=embed)
         
-
-
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
         url = pSumUrl
-        aColor = discord.Colour.dark_theme()
+        a_color = discord.Colour.dark_theme()
         # bot cannot have profile
         view = None
         if member.id == interaction.client.user.id:
-            embed = discord.Embed(color=aColor,
+            embed = discord.Embed(color=a_color,
                                     title=f'Bot does not have a steam profile!')
         else: 
             # check if user is registered and if token is valid
@@ -52,28 +49,25 @@ class SteamCommands(commands.Cog):
                 b_token = u.fetch_token(member.id)
                 # check if user 
                 steam_id = u.get_user_steam_id(b_token)
-                embed = discord.Embed(color=aColor,
+                embed = discord.Embed(color=a_color,
                                 title=f'User must add steam to their connections in **settings > connections**')
                 if steam_id is not None:
                     # unpack steam data
                     url+=steam_id
                     data = u.get_steam_data(url)
-                    avatar, name, country, profile_url, time_created = (u.unpack(0, data, 'avatarfull'), 
-                            u.unpack(0, data, 'personaname'), u.unpack(0, data, 'loccountrycode'), 
-                            u.unpack(0, data, 'profileurl'), u.unpack(0, data, "timecreated"))
+                    avatar, name, country, profile_url, time_created = (u.unpack(0, data, 'avatarfull', 'players'), 
+                            u.unpack(0, data, 'personaname', 'players'), u.unpack(0, data, 'loccountrycode', 'players'), 
+                            u.unpack(0, data, 'profileurl', 'players'), u.unpack(0, data, 'timecreated', 'players'))
                     if len(country) == 2: country = f":flag_{country.lower()}:"
 
-                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
+                    embed = discord.Embed(colour=a_color,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                         value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar)
-                    view = SteamSelectMenu(interaction=interaction, embed=embed)
+                    view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id)
             else:
-                embed = discord.Embed(color=aColor,
+                embed = discord.Embed(color=a_color,
                                 title=f'User must register their account by using **/register** command')
         embed.set_author(name=member.name, icon_url=member.avatar)
         await interaction.response.send_message(embed=embed, view=view)
             
-        
-
-        
 async def setup(bot):
     await bot.add_cog(SteamCommands(bot))
