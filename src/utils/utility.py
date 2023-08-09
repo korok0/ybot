@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import sqlite3
 import sys
+import time
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
 print(f"PR Utility: {project_root}")
@@ -20,16 +21,27 @@ REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 # custom utility commands for handling databases and discord data
 class Utility:
-    def unpack(self, index: int, data, index_name: str) -> str:
+    def unpack(self, index: int, data, index_name: str):
         """
         :param index: int
         :param data: `Request.get.json()` data
         :param index_name: key for data
-        :return: str value
+        :return: Any value
         """
-
-        person = list(data.values())[index]['players']
-        return person[0][index_name]
+        print(index_name)
+        try:
+            person = list(data.values())[index]['players']
+            return person[index][index_name]
+        except Exception as k:
+            print(k)
+            print(index_name)
+            if index_name == 'loccountrycode':
+                print("ahh")
+                return ":x:"
+            elif index_name == 'lastlogoff':
+                print("de")
+                return time.time()
+            return None
     
     def test_token(self, id: int) -> bool:
         """

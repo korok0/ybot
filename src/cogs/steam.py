@@ -41,6 +41,7 @@ class SteamCommands(commands.Cog):
         url = pSumUrl
         aColor = discord.Colour.dark_theme()
         # bot cannot have profile
+        view = None
         if member.id == interaction.client.user.id:
             embed = discord.Embed(color=aColor,
                                     title=f'Bot does not have a steam profile!')
@@ -56,27 +57,24 @@ class SteamCommands(commands.Cog):
                                     title=f'User must add steam to their connections in settings>connections')
                     ephVar = False
                 else:
+                    # unpack steam data
                     url+=steam_id
                     data = u.get_steam_data(url)
                     avatar = u.unpack(0, data, 'avatarfull')
-
                     name = u.unpack(0, data, 'personaname')
-                    country = u.unpack(0, data, "loccountrycode")
-                    time_created = u.unpack(0, data, "timecreated")
-
-                    # handle new account error
-                    try:
-                        last_on = u.unpack(0, data, 'lastlogoff')
-                    except Exception as e:
-                        print(f"new account error: {e}\nUsing current time")
-                        last_on = time.time()
-
+                    country = u.unpack(0, data, 'loccountrycode')
                     profile_url = u.unpack(0, data, 'profileurl')
-                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** :flag_{country.lower()}:")
-                    embed.add_field(name=f"**__Last logoff__** ", value=f"{datetime.utcfromtimestamp(int(last_on)).strftime('%b %d %Y')}", inline=True)
-                    embed.add_field(name=f"**__Created__** ", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}", inline=True)
+                    time_created = u.unpack(0, data, "timecreated")
+                
+                    if len(country) == 2:
+                        country = f":flag_{country.lower()}:"
+
+                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}")
+                    embed.add_field(name=f"**__Created__** ", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}")
                     embed.set_thumbnail(url=avatar)
                     ephVar = False
+                    view = SteamSelectMenu(interaction=interaction, embed=embed)
+                    print("debug 1")
             else:
                 if member.id == interaction.user.id:
                     # will send user to register/authenticate their account into the database
@@ -88,8 +86,9 @@ class SteamCommands(commands.Cog):
                     embed = discord.Embed(color=aColor,
                                     title=f'User must register their account by using /register command (WIP)')
                     ephVar = False
+                
         embed.set_author(name=member.name, icon_url=member.avatar)
-        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=SteamSelectMenu(interaction=interaction, embed=embed))
+        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=view)
             
         
 
