@@ -28,12 +28,11 @@ class SteamSelectMenu(discord.ui.View):
     @discord.ui.select(options=[
         discord.SelectOption(label="Recently Played"),
         discord.SelectOption(label="User Profile")
-    ])
+    ], placeholder="Info")
     async def select_page(self, interaction: discord.Interaction, option: discord.ui.Select):
-        if option.values[0] == "User Profile": 
-            await interaction.message.edit(embed=self.embed, view=self)
-            await interaction.response.defer()
-        elif option.values[0] == "Recently Played":
+        # default page is user profile denoted by this embed
+        embed = self.embed
+        if option.values[0] == "Recently Played":
             url = f"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={STEAM_KEY}&steamid={self.steam_id}&count=1"
             data = u.get_steam_data(url)
             game_name = u.unpack(0, data, 'name', 'games')
@@ -42,7 +41,7 @@ class SteamSelectMenu(discord.ui.View):
             # rpg = u.unpack()
             embed = discord.Embed(
                 color=discord.Color.dark_theme(),
-                title=game_name)
+                title=game_name, url=f"https://store.steampowered.com/app/{app_id}")
             embed.set_thumbnail(url=f"https://media.steampowered.com/steamcommunity/public/images/apps/{app_id}/{url_hash}.jpg")
-            await interaction.message.edit(embed=embed, view=self)
-            await interaction.response.defer()
+        await interaction.message.edit(embed=embed, view=self)
+        await interaction.response.defer()
