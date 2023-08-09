@@ -42,7 +42,6 @@ class SteamCommands(commands.Cog):
         
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
-        url = pSumUrl
         a_color = discord.Colour.dark_theme()
         # bot cannot have profile
         view = None
@@ -58,9 +57,12 @@ class SteamCommands(commands.Cog):
                 embed = discord.Embed(color=a_color,
                                 title=f'User must add steam to their connections in **settings > connections**')
                 if steam_id is not None:
+                    p_sum_url = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={STEAM_KEY}&steamids="
+                    game_url = f"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={STEAM_KEY}&steamid={steam_id}&count=1"
                     # unpack steam data
-                    url+=steam_id
-                    data = u.get_steam_data(url)
+                    p_sum_url+=steam_id
+                    data = u.get_steam_data(p_sum_url)
+                    game_data = u.get_steam_data(game_url)
                     avatar, name, country, profile_url, time_created = (u.unpack(0, data, 'avatarfull', 'players'), 
                             u.unpack(0, data, 'personaname', 'players'), u.unpack(0, data, 'loccountrycode', 'players'), 
                             u.unpack(0, data, 'profileurl', 'players'), u.unpack(0, data, 'timecreated', 'players'))
@@ -68,7 +70,7 @@ class SteamCommands(commands.Cog):
 
                     embed = discord.Embed(colour=a_color,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                         value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar)
-                    view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id)
+                    view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data)
             else:
                 embed = discord.Embed(color=a_color,
                                 title=f'User must register their account by using **/link** command')

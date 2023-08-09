@@ -14,16 +14,17 @@ u = Utility()
 
 class SteamSelectMenu(discord.ui.View):
     # pass in app_command interaction so that we can manipulate it
-    def __init__(self, interaction: discord.Interaction, embed: discord.Embed, steam_id: str):
+    def __init__(self, interaction: discord.Interaction, embed: discord.Embed, steam_id: str, data=None):
         """
         :param interaction: command's original `discord.Interaction`
         :param embed: command's original `discord.Embed` in this case it is the User Profile embed page
-        
+        :param data: any sort of data passed through. Defaults to None
         """
         super().__init__()
         self.embed = embed
         self.interaction = interaction
         self.steam_id = steam_id
+        self.data = data
     
     @discord.ui.select(options=[
         discord.SelectOption(label="Recently Played"),
@@ -33,8 +34,7 @@ class SteamSelectMenu(discord.ui.View):
         # default page is user profile denoted by this embed
         embed = self.embed
         if option.values[0] == "Recently Played":
-            url = f"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={STEAM_KEY}&steamid={self.steam_id}&count=1"
-            data = u.get_steam_data(url)
+            data = self.data
             game_name = u.unpack(0, data, 'name', 'games')
             url_hash = u.unpack(0, data, 'img_icon_url', 'games')
             app_id = u.unpack(0, data, 'appid', 'games')
