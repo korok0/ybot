@@ -36,6 +36,7 @@ class SteamCommands(commands.Cog):
         await interaction.response.send_message(view=SteamButton(interaction), embed=embed)
         
 
+
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
         url = pSumUrl
@@ -45,50 +46,31 @@ class SteamCommands(commands.Cog):
         if member.id == interaction.client.user.id:
             embed = discord.Embed(color=aColor,
                                     title=f'Bot does not have a steam profile!')
-            ephVar = False
         else: 
             # check if user is registered and if token is valid
             if u.is_registered(member.id) and u.test_token(member.id):
                 b_token = u.fetch_token(member.id)
                 # check if user 
                 steam_id = u.get_user_steam_id(b_token)
-                if steam_id is None:
-                    embed = discord.Embed(color=aColor,
-                                    title=f'User must add steam to their connections in settings>connections')
-                    ephVar = False
-                else:
+                embed = discord.Embed(color=aColor,
+                                title=f'User must add steam to their connections in **settings > connections**')
+                if steam_id is not None:
                     # unpack steam data
                     url+=steam_id
                     data = u.get_steam_data(url)
-                    avatar = u.unpack(0, data, 'avatarfull')
-                    name = u.unpack(0, data, 'personaname')
-                    country = u.unpack(0, data, 'loccountrycode')
-                    profile_url = u.unpack(0, data, 'profileurl')
-                    time_created = u.unpack(0, data, "timecreated")
-                
-                    if len(country) == 2:
-                        country = f":flag_{country.lower()}:"
+                    avatar, name, country, profile_url, time_created = (u.unpack(0, data, 'avatarfull'), 
+                            u.unpack(0, data, 'personaname'), u.unpack(0, data, 'loccountrycode'), 
+                            u.unpack(0, data, 'profileurl'), u.unpack(0, data, "timecreated"))
+                    if len(country) == 2: country = f":flag_{country.lower()}:"
 
-                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}")
-                    embed.add_field(name=f"**__Created__** ", value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}")
-                    embed.set_thumbnail(url=avatar)
-                    ephVar = False
+                    embed = discord.Embed(colour=aColor,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
+                        value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar)
                     view = SteamSelectMenu(interaction=interaction, embed=embed)
-                    print("debug 1")
             else:
-                if member.id == interaction.user.id:
-                    # will send user to register/authenticate their account into the database
-                    ephVar = True
-                    embed = discord.Embed(color=aColor,
-                                        title=f'User does not have an account linked. Click to register',
-                                        url='https://discord.com/api/oauth2/authorize?client_id=1027772366476017677&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fe&response_type=code&scope=identify%20connections')
-                else:
-                    embed = discord.Embed(color=aColor,
-                                    title=f'User must register their account by using /register command (WIP)')
-                    ephVar = False
-                
+                embed = discord.Embed(color=aColor,
+                                title=f'User must register their account by using **/register** command')
         embed.set_author(name=member.name, icon_url=member.avatar)
-        await interaction.response.send_message(embed=embed, ephemeral=ephVar, view=view)
+        await interaction.response.send_message(embed=embed, view=view)
             
         
 
