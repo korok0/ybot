@@ -18,6 +18,7 @@ from src.utils.utility import Utility
 load_dotenv()
 u = Utility()
 STEAM_KEY = os.getenv("STEAM_SECRET_TOKEN")
+BOT_OAUTH_LINK = os.getenv("BOT_OAUTH_LINK")
 pSumUrl = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={STEAM_KEY}&steamids="
 
 class SteamCommands(commands.Cog):
@@ -29,10 +30,15 @@ class SteamCommands(commands.Cog):
         print("steam cog loaded!")
 
     # add confirmation later
-    @app_commands.command(name="unlink", description="unlinks your steam profile")
+    @app_commands.command(name="unlink", description="unlinks your connections from bot")
     async def unlink(self, interaction: discord.Interaction):
         embed = discord.Embed(color=discord.Color.blue(), title="Do you wish to unlink your account?")
-        await interaction.response.send_message(view=SteamButton(interaction), embed=embed)
+        await interaction.response.send_message(view=SteamButton(interaction, 'unlink'), embed=embed)
+    
+    @app_commands.command(name="link", description="links your connections to bot")
+    async def link(self, interaction: discord.Interaction):
+        embed = discord.Embed(color=discord.Color.green(), title="Link your account", url=BOT_OAUTH_LINK)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
@@ -65,7 +71,7 @@ class SteamCommands(commands.Cog):
                     view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id)
             else:
                 embed = discord.Embed(color=a_color,
-                                title=f'User must register their account by using **/register** command')
+                                title=f'User must register their account by using **/link** command')
         embed.set_author(name=member.name, icon_url=member.avatar)
         await interaction.response.send_message(embed=embed, view=view)
             
