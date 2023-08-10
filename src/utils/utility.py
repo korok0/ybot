@@ -26,6 +26,7 @@ class Utility:
         :param index: int
         :param data: `Request.get.json()` data
         :param index_name: key for data
+        :param index_type: another key for data if data is nested dict
         :return: Any value
         """
         try:
@@ -121,8 +122,10 @@ class Utility:
         :return: json encoded content
         """
         res = requests.get(url)
+        print(f"request status code: {res.status_code}")
         data = res.json()
-        print(data)
+        print(f"data type: {type(data)}")
+        print(f"data: {data}")
         return data
     
     # Need to create full-fledged/hosted website for this

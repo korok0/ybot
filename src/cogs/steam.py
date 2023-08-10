@@ -66,7 +66,7 @@ class SteamCommands(commands.Cog):
 
                 embed = discord.Embed(colour=a_color,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                     value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar)
-                view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data)
+                view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data, member=member)
         else:
             embed = discord.Embed(color=a_color,
                             title=f'User must register their account by using **/link** command')

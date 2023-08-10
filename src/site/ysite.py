@@ -11,15 +11,7 @@ u = Utility()
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
-    return redirect("https://www.google.com/")
-
-@app.route("/route1")
-def route_one():
-    name = request.args.get("name")
-    print(name)
-    if name is None:
-        name = "Friend"
+def index():
     return redirect("https://www.google.com/")
 
 @app.route("/e")
@@ -27,6 +19,7 @@ def code():
     name = request.args.get("code")
     if name is not None:
         u.register(name)
-    return "<h1>yo</h1>"
+        return "<h1>Successfully registered</h1>"
+    return "<h1>Failed to register</h1>"
 
 app.run()
