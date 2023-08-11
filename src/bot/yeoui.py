@@ -26,7 +26,6 @@ async def on_ready():
 @bot.event
 async def on_message_delete(message):
     memb = message.author
-    
     channel = bot.get_channel(1130593170053398581)
     mlog = f"Message sent by <@{memb.id}> deleted in <#{message.channel.id}>\n**Contents:** {message.content}"
     embed = discord.Embed(description = mlog, color = discord.Colour.random())
@@ -36,16 +35,14 @@ async def on_message_delete(message):
 @bot.event           
 async def on_message(message: discord.Message):
     await bot.process_commands(message)
-    if message in bot.tree.get_commands():
-        print("Valid command")
 
-@bot.command()
+@bot.command(brief="shuts down bot")
 @is_owner()
 async def shutdown(ctx):
     await bot.application.owner.send(content=f"Bot shutting down...\nShut down command initialized by {ctx.author.name}")
     await bot.close()
 
-@bot.command()
+@bot.command(brief="syncs commands", description="this command helps sync bot commands across guilds")
 @is_owner()
 async def sync(ctx):
     print("is owner confirmed")
