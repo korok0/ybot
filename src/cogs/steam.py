@@ -70,7 +70,7 @@ class SteamCommands(commands.Cog):
         else:
             embed = discord.Embed(color=a_color,
                             title=f'User must register their account by using **/link** command')
-        embed.set_author(name=member.name, icon_url=member.avatar)
+        embed.set_footer(text=member.name, icon_url=member.avatar)
         await interaction.response.send_message(embed=embed, view=view)
             
 async def setup(bot):

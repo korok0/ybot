@@ -43,9 +43,12 @@ class SteamSelectMenu(discord.ui.View):
                 game_name = u.unpack(0, data, 'name', 'games')
                 url_hash = u.unpack(0, data, 'img_icon_url', 'games')
                 app_id = u.unpack(0, data, 'appid', 'games')
+                time_played = u.unpack(0, data, 'playtime_2weeks', 'games')
+                min = "minutes"
+                if min == 1: min = "minute"
                 embed = discord.Embed(
                     color=discord.Color.dark_theme(),
-                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}")
+                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played:** {time_played} {min}")
                 embed.set_thumbnail(url=f"https://media.steampowered.com/steamcommunity/public/images/apps/{app_id}/{url_hash}.jpg")
             else: 
                 embed = discord.Embed(title="User has no games played")

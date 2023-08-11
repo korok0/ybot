@@ -32,8 +32,8 @@ class Utility:
         try:
             person = list(data.values())[index][index_type]
             return person[index][index_name]
-        except Exception as k:
-            print(k)
+        except Exception as e:
+            print(f"Exception: {e}")
             if index_name == 'loccountrycode':
                 return ":x:"
             elif index_name == 'lastlogoff':
