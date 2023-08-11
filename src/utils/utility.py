@@ -157,7 +157,6 @@ class Utility:
         ec = self._exchange_code(code)
         print(ec)
         bearer_token = ec["access_token"]
-        # refresh_token = ec["refresh_token"]
         headers = {
             'Authorization': f'Bearer {bearer_token}'
         }
@@ -165,16 +164,13 @@ class Utility:
         print(f"Bearer Token: {bearer_token}")
         response = requests.get(url=url,headers=headers)
         user=response.json()
-        member_id = int(user["id"])
-        
-        # must come back and clean up this code
+        id = int(user["id"])
         try:
-            c.execute(f"INSERT INTO users VALUES ({member_id}, '{bearer_token}')")
-            print(f"attempting to register user: {member_id}")
+            c.execute(f"INSERT INTO users VALUES ({id}, '{bearer_token}')")
+            print(f"attempting to register user: {id}")
         except Exception as e:
             print(e)
-            print(f"unique id: {member_id} already exists in database")
-
+            print(f"unique id: {id} already exists in database")
         c.execute("SELECT * FROM users")
         print(c.fetchall())
         conn.commit()
@@ -213,9 +209,8 @@ class Utility:
         print(f"data: {data}")
         if data is not None:
             if id == data[0]:
-                print(f"id {id}")
-                print(f"data 0: {data[0]}")
+                print(f"user is registered. data 0: {data[0]}")
                 conn.close()
                 return True
-            conn.close()
+        conn.close()
         return False

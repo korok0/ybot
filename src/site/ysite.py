@@ -18,8 +18,13 @@ def index():
 def code():
     name = request.args.get("code")
     if name is not None:
-        u.register(name)
-        return "<h1>Successfully registered</h1>"
-    return "<h1>Failed to register</h1>"
+        try:
+            u.register(name)
+            return "<h1>Successfully registered</h1>"
+        except Exception as e:
+            print(e)
+            return "<h1>Failed to register</h1>"
+    return """<head><title>Hi!</title></head>
+            <h1>Welcome!</h1>"""
 
 app.run()
