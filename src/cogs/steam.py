@@ -22,7 +22,7 @@ BOT_OAUTH_LINK = os.getenv("BOT_OAUTH_LINK")
 pSumUrl = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={STEAM_KEY}&steamids="
 
 class SteamCommands(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()

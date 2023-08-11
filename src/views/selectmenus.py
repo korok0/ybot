@@ -40,10 +40,8 @@ class SteamSelectMenu(discord.ui.View):
             data = self.data
             # check if response is empty
             if len(data['response']) != 0:
-                game_name = u.unpack(0, data, 'name', 'games')
-                url_hash = u.unpack(0, data, 'img_icon_url', 'games')
-                app_id = u.unpack(0, data, 'appid', 'games')
-                time_played = u.unpack(0, data, 'playtime_2weeks', 'games')
+                game_name, url_hash, app_id, time_played = (u.unpack(0, data, 'name', 'games'), u.unpack(0, data, 'img_icon_url', 'games'), u.unpack(0, data, 'appid', 'games'),
+                                                            u.unpack(0, data, 'playtime_2weeks', 'games'))
                 min = "minutes"
                 if min == 1: min = "minute"
                 embed = discord.Embed(
