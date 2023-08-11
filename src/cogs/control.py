@@ -8,10 +8,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__fi
 print(f"PR Control: {project_root}")
 sys.path.append(project_root)
 
-from src.views.buttons import SteamButton
-from src.views.selectmenus import SteamSelectMenu
 from src.utils.utility import Utility
-
 
 class BotControl(commands.Cog):
     def __init__(self, bot: commands.Bot):

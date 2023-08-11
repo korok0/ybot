@@ -21,7 +21,7 @@ REDIRECT_URI = 'http://127.0.0.1:5000/e'
 
 # custom utility commands for handling databases and discord data
 class Utility:
-    def unpack(self, index: int, data, index_name: str, index_type: str):
+    def unpack_steam(self, index: int, data, index_name: str, index_type: str):
         """
         :param index: int
         :param data: `Request.get.json()` data

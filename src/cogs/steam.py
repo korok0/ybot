@@ -60,9 +60,9 @@ class SteamCommands(commands.Cog):
                     p_sum_url+=steam_id
                     data = u.get_steam_data(p_sum_url)
                     game_data = u.get_steam_data(game_url)
-                    avatar, name, country, profile_url, time_created = (u.unpack(0, data, 'avatarfull', 'players'), 
-                            u.unpack(0, data, 'personaname', 'players'), u.unpack(0, data, 'loccountrycode', 'players'), 
-                            u.unpack(0, data, 'profileurl', 'players'), u.unpack(0, data, 'timecreated', 'players'))
+                    avatar, name, country, profile_url, time_created = (u.unpack_steam(0, data, 'avatarfull', 'players'), 
+                            u.unpack_steam(0, data, 'personaname', 'players'), u.unpack_steam(0, data, 'loccountrycode', 'players'), 
+                            u.unpack_steam(0, data, 'profileurl', 'players'), u.unpack_steam(0, data, 'timecreated', 'players'))
                     if len(country) == 2: country = f":flag_{country.lower()}:"
 
                     embed = discord.Embed(colour=a_color,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 

@@ -5,7 +5,7 @@ from collections import deque
 from typing import Any
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
-print(f"PR Buttons: {project_root}")
+print(f"PR SelectMenu: {project_root}")
 sys.path.append(project_root)
 
 from src.utils.utility import Utility
@@ -40,8 +40,8 @@ class SteamSelectMenu(discord.ui.View):
             data = self.data
             # check if response is empty
             if len(data['response']) != 0:
-                game_name, url_hash, app_id, time_played = (u.unpack(0, data, 'name', 'games'), u.unpack(0, data, 'img_icon_url', 'games'), u.unpack(0, data, 'appid', 'games'),
-                                                            u.unpack(0, data, 'playtime_2weeks', 'games'))
+                game_name, url_hash, app_id, time_played = (u.unpack_steam(0, data, 'name', 'games'), u.unpack_steam(0, data, 'img_icon_url', 'games'), u.unpack_steam(0, data, 'appid', 'games'),
+                                                            u.unpack_steam(0, data, 'playtime_2weeks', 'games'))
                 min = "minutes"
                 if min == 1: min = "minute"
                 embed = discord.Embed(
