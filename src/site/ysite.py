@@ -20,10 +20,12 @@ def code():
     if name is not None:
         try:
             u.register(name)
-            return "<h1>Successfully registered</h1>"
+            print("Successfully registered")
+            return redirect("https://www.google.com/")
         except Exception as e:
             print(e)
-            return "<h1>Failed to register</h1>"
+            print("Failed to register")
+            return redirect("https://www.google.com/")
     return """<head><title>Hi!</title></head>
             <h1>Welcome!</h1>"""
 
