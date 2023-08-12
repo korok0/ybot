@@ -10,4 +10,6 @@ src/cogs/__pycache__/
 src/buttons/__pycache__/
 src/views/__pycache__/
 src/bot/q1.sql
+*.code-workspace
+
 
