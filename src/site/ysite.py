@@ -12,21 +12,23 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return redirect("https://www.google.com/")
+    return render_template('index.html')
+@app.route("/home")
+def home():
+    return render_template('home.html')
 
 @app.route("/e")
 def code():
-    name = request.args.get("code")
-    if name is not None:
+    code = request.args.get("code")
+    if code is not None:
         try:
-            u.register(name)
+            u.register(code)
             print("Successfully registered")
-            return redirect("https://www.google.com/")
+            return render_template('index.html')
         except Exception as e:
             print(e)
             print("Failed to register")
             return redirect("https://www.google.com/")
-    return """<head><title>Hi!</title></head>
-            <h1>Welcome!</h1>"""
+    return render_template('index.html')
 
 app.run()

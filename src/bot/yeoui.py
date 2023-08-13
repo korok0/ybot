@@ -15,14 +15,13 @@ TOKEN = os.getenv("BOT_SECRET_TOKEN")
 APPLICATION_ID = os.getenv("BOT_APPLICATION_ID")
 
 class Bot(commands.Bot):
-    def __init__(self, command_prefix, intents, status, activity, application_id):
-        intents = discord.Intents.all()
-        super().__init__(command_prefix=command_prefix, intents=intents, status=status, activity=activity, application_id=application_id)
+    def __init__(self):
+        super().__init__(command_prefix="!", intents=discord.Intents.all(), status=discord.Status.online, activity=discord.Game(name="Bot Activities"), application_id=APPLICATION_ID)
      
     async def on_ready(self):
         print(f"{self.user} is ready!")
 
-bot = Bot(command_prefix="!", intents=discord.Intents.all(), status=discord.Status.online, activity=discord.Game(name="Bot Activities"), application_id=APPLICATION_ID)
+bot = Bot()
 
 async def load():
     for file in os.listdir(os.path.join(project_root, 'src', 'cogs')):
