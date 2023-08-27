@@ -1,7 +1,7 @@
 .env
 .db
 .pyc
-ybotvenv/
+.ybotvenv/
 src/bot/*.db
 /__pycache__
 src/__pycache__/

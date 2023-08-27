@@ -15,7 +15,7 @@ u = Utility()
 
 class SteamSelectMenu(discord.ui.View):
     # pass in app_command interaction so that we can manipulate it
-    def __init__(self, interaction: discord.Interaction, embed: discord.Embed, steam_id: str, data: Any, member: discord.Member):
+    def __init__(self, interaction: discord.Interaction, embed: discord.Embed, steam_id: str, data, member: discord.Member):
         """
         :param interaction: command's original `discord.Interaction`
         :param embed: command's original `discord.Embed` in this case it is the User Profile embed page
@@ -38,8 +38,9 @@ class SteamSelectMenu(discord.ui.View):
         embed = self.embed
         if option.values[0] == "Most Played Past 2 Weeks":
             data = self.data
+            print(data)
             # check if response is empty
-            if len(data['response']) != 0:
+            if data["response"]["total_count"] != 0:
                 game_name, url_hash, app_id, time_played = (u.unpack_steam(0, data, 'name', 'games'), u.unpack_steam(0, data, 'img_icon_url', 'games'), u.unpack_steam(0, data, 'appid', 'games'),
                                                             u.unpack_steam(0, data, 'playtime_2weeks', 'games'))
                 min = "minutes"

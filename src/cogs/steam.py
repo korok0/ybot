@@ -47,7 +47,9 @@ class SteamCommands(commands.Cog):
         view = None
         if not member.bot:
             # check if user is registered and if token is valid
+            print("a")
             if u.is_registered(member.id) and u.test_token(member.id):
+                print("e")
                 b_token = u.fetch_token(member.id)
                 # check if user 
                 steam_id = u.get_user_steam_id(b_token)
@@ -64,15 +66,18 @@ class SteamCommands(commands.Cog):
                             u.unpack_steam(0, data, 'personaname', 'players'), u.unpack_steam(0, data, 'loccountrycode', 'players'), 
                             u.unpack_steam(0, data, 'profileurl', 'players'), u.unpack_steam(0, data, 'timecreated', 'players'))
                     if len(country) == 2: country = f":flag_{country.lower()}:"
-
+                    print("W")
                     embed = discord.Embed(colour=a_color,title=f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                         value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar)
                     view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data, member=member)
             else:
                 embed = discord.Embed(color=a_color,
                                 title='User must register their account by using **/link** command')
+            print("y")
             embed.set_footer(text=member.name, icon_url=member.avatar)
+            print("o")
             await interaction.response.send_message(embed=embed, view=view)
+            print()
         else:
             embed = discord.Embed(color=discord.Color.dark_theme(), title='**bots** cannot have steam accounts!').set_footer(text=member.name, icon_url=member.avatar)
             await interaction.response.send_message(embed=embed)
