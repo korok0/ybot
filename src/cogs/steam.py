@@ -42,6 +42,7 @@ class SteamCommands(commands.Cog):
         
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
+        await interaction.response.defer()
         a_color = discord.Colour.dark_theme()
         # bot cannot have profile
         view = None
@@ -76,8 +77,7 @@ class SteamCommands(commands.Cog):
             print("y")
             embed.set_footer(text=member.name, icon_url=member.avatar)
             print("o")
-            await interaction.response.send_message(embed=embed, view=view)
-            print()
+            await interaction.followup.send(embed=embed, view=view)
         else:
             embed = discord.Embed(color=discord.Color.dark_theme(), title='**bots** cannot have steam accounts!').set_footer(text=member.name, icon_url=member.avatar)
             await interaction.response.send_message(embed=embed)
