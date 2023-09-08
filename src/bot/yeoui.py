@@ -33,4 +33,5 @@ async def main():
     await bot.start(TOKEN)
     print("test")
     print("test 2")
+    print("test 3")
 asyncio.run(main())
