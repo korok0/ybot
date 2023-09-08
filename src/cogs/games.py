@@ -17,11 +17,6 @@ class Games(commands.Cog):
 		cat_url = "https://api.thecatapi.com/v1/images/search"
 		res = requests.get(cat_url)
 		data = res.json()
-		{ 
-			{
-				
-			}
-		}
 		first_item = data[0]
 		cat_image = first_item['url']
 		print(cat_image)
