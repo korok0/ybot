@@ -49,7 +49,7 @@ class Games(commands.Cog):
 			answer = f"You **lose!** {interaction.user.mention}"
 			aColor =  discord.Colour.brand_red()
 		embed = discord.Embed(description=f'The coin landed on **{choice}**!\n{answer}', color=aColor)
-		embed.set_author(name='Coinflip', icon_url='https://thumbs.gfycat.com/TerribleTepidArmedcrab-max-1mb.gif')
+		embed.set_author(name='Coinflip', icon_url='https://media.tenor.com/qTVMTe8Mk3cAAAAM/blender-pixel-art.gif')
 		await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
