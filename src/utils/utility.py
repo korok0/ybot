@@ -44,17 +44,19 @@ class Utility:
         """
         :param id: `discord.Member` id
         :return: `bool`
+
+        Check if token is valid
         """
         test = self.fetch_token(id)
         headers = {
             'Authorization': f'Bearer {test}'
         }
         response = requests.get(url=url,headers=headers)
-        user=response.json()
+
         if response.status_code != 200:
             self.unregister(id)
             return False
-            
+
         return True
 
     def fetch_token(self, id: int) -> str:
@@ -86,13 +88,6 @@ class Utility:
         user = response.json()
         print(user)
         return user
-    
-    def get_user_spotify_id(self, token: str):
-        """
-        :param token: token for spotify api authentication
-        :return: `str` or `None`
-        """
-        pass
     
     def get_user_steam_id(self, token: str):
         """
