@@ -13,6 +13,7 @@ sys.path.append(project_root)
 # value = steam id
 load_dotenv()
 url = 'https://discord.com/api/v10/users/@me'
+conn_url = 'https://discord.com/api/v10/users/@me/connections'
 API_ENDPOINT = "https://discord.com/api/v10"
 CLIENT_ID = os.getenv("BOT_APPLICATION_ID")
 CLIENT_SECRET = os.getenv("BOT_OAUTH_SECRET")
@@ -80,11 +81,10 @@ class Utility:
         :return: `str` member connection token
         """
         token = self.fetch_token(id)
-        url = 'https://discord.com/api/v10/users/@me/connections'
         headers = {
             'Authorization': f'Bearer {token}'
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(conn_url, headers=headers)
         user = response.json()
         print(user)
         return user
@@ -94,12 +94,11 @@ class Utility:
         :param token: token for discord api authentication
         :return: `str` or `None`
         """
-        url = 'https://discord.com/api/v10/users/@me/connections'
         headers = {
             'Authorization': f'Bearer {token}'
         }
         
-        response = requests.get(url, headers=headers)
+        response = requests.get(conn_url, headers=headers)
 
         if response.status_code == 200:
             connections = response.json()
