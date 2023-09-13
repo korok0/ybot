@@ -48,9 +48,12 @@ class MessageCog(commands.Cog):
 
     @set_logs.error
     async def set_logs_error(self, interaction: discord.Interaction, error: discord.app_commands.MissingPermissions):
-        await interaction.response.send_message(embed=discord.Embed(
-            description=f"missing permissions: **{error.missing_permissions}**"), 
+        mp = "\n".join(error.missing_permissions)
+        await interaction.response.send_message(embed=discord.Embed(title="missing permissions:",
+            description=f"{mp}"), 
             ephemeral=True)
-
+        for item in error.missing_permissions:
+            mp+=f"\n{item}"
+        print(mp)
 async def setup(bot):
     await bot.add_cog(MessageCog(bot))
