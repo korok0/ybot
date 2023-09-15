@@ -12,3 +12,4 @@ src/views/__pycache__/
 src/bot/q1.sql
 *.code-workspace
 /ybot-virtual-env
+.idea/
