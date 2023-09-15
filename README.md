@@ -2,9 +2,9 @@
 ybot is a [Discord](https://discord.com/) bot that works with APIs to enhance small quality of life changes to the discord user experience
 
 The APIs used: <br/>
-[discord.py]() API Wrapper <br/>
+[discord.py](https://discordpy.readthedocs.io/en/stable/) API Wrapper <br/>
 [Steam Web API](https://steamcommunity.com/dev) <br/>
-[The Cat API](https://developers.thecatapi.com/)
+[The Cat API](https://thecatapi.com/)
 
 API Authentication Used: <br/>
 [Oauth2](https://discord.com/developers/docs/topics/oauth2) through Discord's official API
