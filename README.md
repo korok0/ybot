@@ -15,7 +15,7 @@ API Authentication Used: <br/>
 ## Requirements
 ```python
 discord.py==2.0.1
-Flask==2.2.2
+flask==2.2.2
 requests==2.31.0
 python-dotenv==1.0.0
 ```
