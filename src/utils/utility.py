@@ -17,7 +17,7 @@ conn_url = 'https://discord.com/api/v10/users/@me/connections'
 API_ENDPOINT = "https://discord.com/api/v10"
 CLIENT_ID = os.getenv("BOT_APPLICATION_ID")
 CLIENT_SECRET = os.getenv("BOT_OAUTH_SECRET")
-REDIRECT_URI = 'http://127.0.0.1:5000/e'
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 
 # custom utility commands for handling databases and discord data
