@@ -50,7 +50,7 @@ class SteamSelectMenu(discord.ui.View):
                     title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played:** {time_played} {min}")
                 embed.set_thumbnail(url=f"https://media.steampowered.com/steamcommunity/public/images/apps/{app_id}/{url_hash}.jpg")
             else: 
-                embed = discord.Embed(title="User has no games played")
+                embed = discord.Embed(title="User has no games played recently")
             embed.set_footer(text=self.member.name, icon_url=self.member.avatar)
         await interaction.message.edit(embed=embed, view=self)
         await interaction.response.defer()

@@ -43,11 +43,18 @@ class SteamCommands(commands.Cog):
     @app_commands.command(name='steamprofile', description="gets the steam profile of member")
     async def get_profile(self, interaction: discord.Interaction, member: discord.Member):
         a_color = discord.Colour.dark_theme()
+
+        # variable that keeps track if interaction has already been responded to
         followup = False
+        
         # bot cannot have profile
         view = None
-        if not member.bot:
+        if member.bot:
+            embed = discord.Embed(color=discord.Color.dark_theme(), title='**bots** cannot have steam accounts!')
+            embed.set_footer(text=member.name, icon_url=member.avatar)
             # check if user is registered and if token is valid
+            
+        else:
             print("a")
             if u.is_registered(member.id) and u.test_token(member.id):
                 print("e")
@@ -66,6 +73,7 @@ class SteamCommands(commands.Cog):
                     p_sum_url+=steam_id
                     data = u.get_steam_data(p_sum_url)
                     game_data = u.get_steam_data(game_url)
+                    # unpack steam details
                     avatar, name, country, profile_url, time_created = (u.unpack_steam(0, data, 'avatarfull', 'players'), 
                             u.unpack_steam(0, data, 'personaname', 'players'), u.unpack_steam(0, data, 'loccountrycode', 'players'), 
                             u.unpack_steam(0, data, 'profileurl', 'players'), u.unpack_steam(0, data, 'timecreated', 'players'))
@@ -78,15 +86,11 @@ class SteamCommands(commands.Cog):
                     
             else:
                 embed = discord.Embed(color=a_color, title='User must register their account by using **/link** command')
-        else:
-            embed = discord.Embed(color=discord.Color.dark_theme(), title='**bots** cannot have steam accounts!')
-        embed.set_footer(text=member.name, icon_url=member.avatar)
-        
+                
         # to avoid "interaction already responded to" error even if it is already handled by discord py
         # to avoid duplicate interaction messages
         if followup == False:
             await interaction.response.send_message(embed=embed)
-            
             
 async def setup(bot):
     await bot.add_cog(SteamCommands(bot))
