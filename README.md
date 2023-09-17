@@ -36,3 +36,4 @@ BOT_OAUTH_LINK =
 REDIRECT_URI = 
 STEAM_SECRET_TOKEN = 
 ```
+Create a `members.db` file in `ybot/src/bot` folder or run `setup.py`
