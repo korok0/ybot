@@ -4,9 +4,8 @@ from discord import app_commands
 import sys
 import os
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+project_root = os.getcwd()
 print(f"PR Message: {project_root}")
-sys.path.append(project_root)
 
 class MessageCog(commands.Cog):
     def __init__(self, bot: commands.Bot):

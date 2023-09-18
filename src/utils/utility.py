@@ -5,9 +5,8 @@ import sqlite3
 import sys
 import time
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+project_root = os.getcwd()
 print(f"PR Utility: {project_root}")
-sys.path.append(project_root)
 
 # key = discord id
 # value = steam id

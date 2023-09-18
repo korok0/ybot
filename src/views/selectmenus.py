@@ -4,9 +4,10 @@ import os
 from collections import deque
 from typing import Any
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+project_root = os.getcwd()
+#project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
 print(f"PR SelectMenu: {project_root}")
-sys.path.append(project_root)
+#sys.path.append(project_root)
 
 from src.utils.utility import Utility
 

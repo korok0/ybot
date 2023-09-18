@@ -4,9 +4,9 @@ from discord import app_commands
 import sys
 import os
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+project_root = os.getcwd()
 print(f"PR Control: {project_root}")
-sys.path.append(project_root)
+
 
 from src.utils.utility import Utility
 

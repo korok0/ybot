@@ -3,6 +3,10 @@ import random
 import discord
 from discord import app_commands
 import requests
+import os
+
+project_root = os.getcwd()
+print(f"PR Games: {project_root}")
 
 class Games(commands.Cog):
 	def __init__(self, bot: commands.Bot):
