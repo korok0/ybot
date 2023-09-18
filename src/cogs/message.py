@@ -21,7 +21,6 @@ class MessageCog(commands.Cog):
     async def on_message_delete(self, message: discord.Message):
         memb = message.author
         if self.log_channel is not None:
-            
             channel = self.log_channel
         else:
             channel = message.guild.owner
@@ -34,17 +33,13 @@ class MessageCog(commands.Cog):
         if len(att) != 0:
             embed.set_image(url=att[0].proxy_url)
         await channel.send(embed=embed)
-
-    @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
-        pass
     
+    @app_commands.guild_only()
     @app_commands.checks.has_permissions(administrator=True, manage_channels=True)
     @app_commands.command(name="setlogs", description="sets message log channel")
-    
     async def set_logs(self, interaction: discord.Interaction):
         self.log_channel = interaction.channel
-        await interaction.response.send_message(content="Log channel set!")
+        await interaction.response.send_message(content="Log channel set!", ephemeral=True)
 
     @set_logs.error
     async def set_logs_error(self, interaction: discord.Interaction, error: discord.app_commands.MissingPermissions):
@@ -52,8 +47,6 @@ class MessageCog(commands.Cog):
         await interaction.response.send_message(embed=discord.Embed(title="missing permissions:",
             description=f"{mp}"), 
             ephemeral=True)
-        for item in error.missing_permissions:
-            mp+=f"\n{item}"
-        print(mp)
+        
 async def setup(bot):
     await bot.add_cog(MessageCog(bot))
