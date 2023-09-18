@@ -1,4 +1,5 @@
 ## Project Description
+My first project on GitHub. All help is welcomed!
 ybot is a [Discord](https://discord.com/) bot that works with APIs to enhance small quality of life changes to the discord user experience
 
 The APIs used: <br/>
@@ -36,4 +37,4 @@ BOT_OAUTH_LINK =
 REDIRECT_URI = 
 STEAM_SECRET_TOKEN = 
 ```
-Create a `members.db` file in `ybot/src/bot` folder or run `setup.py`
+Run `setup.py` to setup the local database
