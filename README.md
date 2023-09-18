@@ -1,5 +1,6 @@
 ## Project Description
-My first project on GitHub. All help is welcomed!
+My first project on GitHub. All help is welcomed! <br/>
+Help with making code more readable/efficient and help with the site's looks are especially appreciated! <br/>
 ybot is a [Discord](https://discord.com/) bot that works with APIs to enhance small quality of life changes to the discord user experience
 
 The APIs used: <br/>
