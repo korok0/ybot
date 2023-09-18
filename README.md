@@ -38,4 +38,11 @@ BOT_OAUTH_LINK =
 REDIRECT_URI = 
 STEAM_SECRET_TOKEN = 
 ```
-Run `setup.py` to setup the local database
+Run `setup.py` to setup the local database<br/>
+Run `yeoui.py` and `ysite.py` <br/>
+Go to discord `settings>connections` and link your steam profile. Then run `/link` command 
+![image](https://github.com/korok0/ybot/assets/140355502/bf0aa017-5b26-4c36-97fc-64540b85fe2a) <br/>
+![image](https://github.com/korok0/ybot/assets/140355502/f41cd001-184d-4518-a2b3-8821afbe175e) <br/>
+![image](https://github.com/korok0/ybot/assets/140355502/2aae649a-4a62-4b93-abe8-9a2ca0897a15)
+
+
