@@ -31,7 +31,7 @@ class SteamCommands(commands.Cog):
     @app_commands.command(name="unlink", description="unlinks your connections from bot")
     async def unlink(self, interaction: discord.Interaction):
         embed = discord.Embed(color=discord.Color.blue(), title="Do you wish to unlink your account?")
-        await interaction.response.send_message(view=SteamButton(interaction, 'unlink'), embed=embed)
+        await interaction.response.send_message(view=SteamButton(interaction=interaction, type='unlink'), embed=embed)
     
     @app_commands.command(name="link", description="links your connections to bot")
     async def link(self, interaction: discord.Interaction):
@@ -53,9 +53,7 @@ class SteamCommands(commands.Cog):
             # check if user is registered and if token is valid
             
         else:
-            print("a")
             if u.is_registered(member.id) and u.test_token(member.id):
-                print("e")
                 b_token = u.fetch_token(member.id)
                 # check if user 
                 steam_id = u.get_user_steam_id(b_token)
@@ -79,7 +77,6 @@ class SteamCommands(commands.Cog):
                         u.unpack_steam(0, data, 'profileurl', 'players'), 
                         u.unpack_steam(0, data, 'timecreated', 'players'))
                     if len(country) == 2: country = f":flag_{country.lower()}:"
-                    print("W")
                     embed = discord.Embed(color= a_color, title= f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                         value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar).set_footer(text=member.name, icon_url=member.avatar)
                     view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data, member=member)

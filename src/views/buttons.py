@@ -3,9 +3,8 @@ import sys
 import os
 
 project_root = os.getcwd()
-#project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
 print(f"PR Buttons: {project_root}")
-#sys.path.append(project_root)
+
 
 from src.utils.utility import Utility
 
@@ -36,7 +35,7 @@ class SteamButton(discord.ui.View):
     
     @discord.ui.button(label="confirm", style=discord.ButtonStyle.green)
     async def confirm(self, interaction: discord.Interaction, Button: discord.ui.Button):
-        # adding type of use so that this can be of general use later
+        # check what kind of command we are executing
         if self.type.lower() == 'unlink':
             if interaction.user.id == self.member_id and self.is_pressed==False:
                 if u.unregister(self.interaction.user.id):

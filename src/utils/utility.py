@@ -8,8 +8,6 @@ import time
 project_root = os.getcwd()
 print(f"PR Utility: {project_root}")
 
-# key = discord id
-# value = steam id
 load_dotenv()
 url = 'https://discord.com/api/v10/users/@me'
 conn_url = 'https://discord.com/api/v10/users/@me/connections'
