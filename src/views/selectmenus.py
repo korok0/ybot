@@ -40,16 +40,29 @@ class SteamSelectMenu(discord.ui.View):
             print(data)
             # check if response is empty
             if data["response"]["total_count"] != 0:
-                game_name, url_hash, app_id, time_played = (u.unpack_steam(0, data, 'name', 'games'), u.unpack_steam(0, data, 'img_icon_url', 'games'), u.unpack_steam(0, data, 'appid', 'games'),
-                                                            u.unpack_steam(0, data, 'playtime_2weeks', 'games'))
-                min = "minutes"
-                if min == 1: min = "minute"
+                game_name, url_hash, app_id, playtime_2weeks, playtime_forever  = (u.unpack_steam(0, data, 'name', 'games'), u.unpack_steam(0, data, 'img_icon_url', 'games'), u.unpack_steam(0, data, 'appid', 'games'),
+                                                            u.unpack_steam(0, data, 'playtime_2weeks', 'games'), u.unpack_steam(0, data, 'playtime_forever', 'games'))
+                
+                # do something with game stats ------------------#
+                game_stats_url = f"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid={app_id}&key={STEAM_KEY}&steamid={self.steam_id}"
+                game_stats = u.get_steam_data(url=game_stats_url)
+                # -----------------------------------------------#
+
+                playtime_2weeks, unit_2weeks = self._convert_time(playtime_2weeks)
+                playtime_forever, unit_forever = self._convert_time(playtime_forever)
+    
                 embed = discord.Embed(
                     color=discord.Color.dark_theme(),
-                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played:** {time_played} {min}")
+                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played Past Two Weeks:** {playtime_2weeks} {unit_2weeks}\n**Total Time Played:** {playtime_forever} {unit_forever}")
                 embed.set_thumbnail(url=f"https://media.steampowered.com/steamcommunity/public/images/apps/{app_id}/{url_hash}.jpg")
             else: 
                 embed = discord.Embed(title="User has no games played recently")
             embed.set_footer(text=self.member.name, icon_url=self.member.avatar)
         await interaction.message.edit(embed=embed, view=self)
         await interaction.response.defer()
+    def _convert_time(self, playtime: int):
+        unit = "minute(s)"
+        if playtime >= 60:
+            playtime /= 60
+            unit = "hour(s)"
+        return playtime, unit
