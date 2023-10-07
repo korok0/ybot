@@ -50,13 +50,13 @@ class SteamCommands(commands.Cog):
         if member.bot:
             embed = discord.Embed(color=discord.Color.dark_theme(), title='**bots** cannot have steam accounts!')
             embed.set_footer(text=member.name, icon_url=member.avatar)
-            # check if user is registered and if token is valid
             
         else:
             if u.is_registered(member.id) and u.test_token(member.id):
                 b_token = u.fetch_token(member.id)
-                # check if user 
                 steam_id = u.get_user_steam_id(b_token)
+
+                # if steam_id not in database
                 if steam_id is None:
                     embed = discord.Embed(color= a_color, title=f'User must add steam to their connections in **settings > connections**')
 
@@ -65,10 +65,12 @@ class SteamCommands(commands.Cog):
                     followup = True
                     p_sum_url = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={STEAM_KEY}&steamids="
                     game_url = f"https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={STEAM_KEY}&steamid={steam_id}&count=1"
+
                     # unpack steam data
                     p_sum_url+=steam_id
                     data = u.get_steam_data(p_sum_url)
                     game_data = u.get_steam_data(game_url)
+
                     # unpack steam details
                     avatar, name, country, profile_url, time_created = (
                         u.unpack_steam(0, data, 'avatarfull', 'players'), 
@@ -76,12 +78,16 @@ class SteamCommands(commands.Cog):
                         u.unpack_steam(0, data, 'loccountrycode', 'players'), 
                         u.unpack_steam(0, data, 'profileurl', 'players'), 
                         u.unpack_steam(0, data, 'timecreated', 'players'))
+                    
+                    # turn country code into country flag emoji
                     if len(country) == 2: country = f":flag_{country.lower()}:"
+
                     embed = discord.Embed(color= a_color, title= f'{name}\'s profile', url=profile_url, description=f"**Country:** {country}").add_field(name=f"**__Created__** ", 
                         value=f"{datetime.utcfromtimestamp(int(time_created)).strftime('%b %d %Y')}").set_thumbnail(url=avatar).set_footer(text=member.name, icon_url=member.avatar)
                     view = SteamSelectMenu(interaction=interaction, embed=embed, steam_id=steam_id, data=game_data, member=member)
                     await interaction.followup.send(embed=embed, view=view)
-                    
+
+            # if user is not registered        
             else:
                 embed = discord.Embed(color=a_color, title='User must register their account by using **/link** command')
                 
