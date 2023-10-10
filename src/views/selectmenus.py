@@ -46,14 +46,6 @@ class SteamSelectMenu(discord.ui.View):
                 # do something with game stats ------------------#
                 game_stats_url = f"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid={app_id}&key={STEAM_KEY}&steamid={self.steam_id}"
                 game_stats: dict = u.get_steam_data(url=game_stats_url)
-                print(f"GAME STATS <----------------------------- {type(game_stats)}")
-                
-                # -----------------------------------------------#
-                
-                """with open("stats.txt", 'w+') as f:
-                    for key in game_stats['playerstats']['stats']:
-                        print(key['name'])
-                        f.write(f"{key['name']}\n")"""
 
                 playtime_2weeks, unit_2weeks = self._convert_time(playtime_2weeks)
                 playtime_forever, unit_forever = self._convert_time(playtime_forever)
@@ -73,7 +65,7 @@ class SteamSelectMenu(discord.ui.View):
                         name: total mvps,
                         value: 10
                     }]
-                    
+
                     stats key gives us a list of dictionaries. Search for "value" key and value by checking the "name" key
                     """
                     total_kills = [item['value'] for item in game_stats['playerstats']['stats'] if item['name'] == 'total_kills'][0]
