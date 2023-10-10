@@ -45,16 +45,41 @@ class SteamSelectMenu(discord.ui.View):
                 
                 # do something with game stats ------------------#
                 game_stats_url = f"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid={app_id}&key={STEAM_KEY}&steamid={self.steam_id}"
-                game_stats = u.get_steam_data(url=game_stats_url)
+                game_stats: dict = u.get_steam_data(url=game_stats_url)
+                print(f"GAME STATS <----------------------------- {type(game_stats)}")
+                
                 # -----------------------------------------------#
+                
+                """with open("stats.txt", 'w+') as f:
+                    for key in game_stats['playerstats']['stats']:
+                        print(key['name'])
+                        f.write(f"{key['name']}\n")"""
 
                 playtime_2weeks, unit_2weeks = self._convert_time(playtime_2weeks)
                 playtime_forever, unit_forever = self._convert_time(playtime_forever)
-    
+
                 embed = discord.Embed(
                     color=discord.Color.dark_theme(),
-                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played Past Two Weeks:** {playtime_2weeks} {unit_2weeks}\n**Total Time Played:** {playtime_forever} {unit_forever}")
+                    title=game_name, url=f"https://store.steampowered.com/app/{app_id}", description=f"**Time Played Past Two Weeks:** {playtime_2weeks:.2f} {unit_2weeks}\n**Total Time Played:** {playtime_forever:.2f} {unit_forever}")
                 embed.set_thumbnail(url=f"https://media.steampowered.com/steamcommunity/public/images/apps/{app_id}/{url_hash}.jpg")
+                if game_name == "Counter-Strike 2":
+                    
+                    """
+                    stats: [{
+                        name: total kills,
+                        value: 1000
+                    },
+                    {
+                        name: total mvps,
+                        value: 10
+                    }]
+                    
+                    stats key gives us a list of dictionaries. Search for "value" key and value by checking the "name" key
+                    """
+                    total_kills = [item['value'] for item in game_stats['playerstats']['stats'] if item['name'] == 'total_kills'][0]
+                    total_wins = [item['value'] for item in game_stats['playerstats']['stats'] if item['name'] == 'total_wins'][0]
+                    embed.description += f"\n**Total wins:** {total_wins}\n**Total kills:** {total_kills}"
+
             else: 
                 embed = discord.Embed(title="User has no games played recently")
             embed.set_footer(text=self.member.name, icon_url=self.member.avatar)
