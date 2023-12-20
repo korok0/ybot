@@ -5,7 +5,7 @@ import sqlite3
 import sys
 import time
 
-project_root = os.getcwd()
+project_root = os.getenv("PROJECT_ROOT")
 print(f"PR Utility: {project_root}")
 
 load_dotenv()

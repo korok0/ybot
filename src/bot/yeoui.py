@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from discord.ext.commands import is_owner
 import sys
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..\.."))
+project_root = os.getcwd()
 print(f"PR Yeoui: {project_root}")
 sys.path.append(project_root)
 
